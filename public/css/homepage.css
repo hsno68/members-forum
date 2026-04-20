@@ -1,0 +1,19 @@
+.container {
+  width: clamp(320px, 60%, 960px);
+  padding: 2rem;
+  margin: 0 auto;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+}
+
+a.button {
+  display: inline-block;
+  padding: 0.5em 1em;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border: none;
+  border-radius: 0.75rem;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.12);
+}

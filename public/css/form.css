@@ -7,6 +7,7 @@
 }
 
 form {
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -35,6 +36,7 @@ input {
   border-radius: 8px;
 }
 
+a.button,
 button {
   display: inline-block;
   padding: 0.5em 1em;
