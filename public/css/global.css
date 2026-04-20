@@ -18,6 +18,7 @@
 }
 
 body {
+  padding: 2rem;
   min-height: 100vh;
   min-height: 100svh;
   font-family: var(--font-stack);
@@ -59,7 +60,7 @@ label {
   cursor: pointer;
 }
 
-input,
+input:not([type="checkbox"]),
 select {
   appearance: none;
   outline: none;
