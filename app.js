@@ -6,7 +6,7 @@ import session from "express-session";
 import pgSession from "connect-pg-simple";
 
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
+import "./passport.js";
 
 import pool from "./db/pool.js";
 import router from "./router.js";
@@ -21,6 +21,8 @@ const PgSession = pgSession(session);
 
 app.set("view engine", "ejs");
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
     store: new PgSession({ pool }),
@@ -30,9 +32,8 @@ app.use(
     cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 }, // 14 days = 2 weeks
   })
 );
+app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
 
 //Routes
 app.use("/", router);
