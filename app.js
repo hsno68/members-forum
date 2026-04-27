@@ -25,11 +25,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
-    store: new PgSession({ pool }),
+    store: new PgSession({
+      pool,
+      createTableIfMissing: true,
+    }),
     secret: "cats",
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 }, // 14 days = 2 weeks
+    cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
   })
 );
 app.use(passport.initialize());
