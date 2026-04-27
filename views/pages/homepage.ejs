@@ -1,5 +1,17 @@
 <div class="container">
-  <h1>Homepage</h1>
-  <a href="/signup" class="button">Sign Up</a>
-  <a href="/login" class="button">Log In</a>
+  <div>
+    <h1>Homepage</h1>
+    <a href="/signup" class="button">Sign Up</a>
+    <a href="/login" class="button">Log In</a>
+  </div>
+  <div>
+    <h2>Users</h2>
+    <ul>
+      <% users.forEach(({username}) => { %>
+        <li>
+          <%= username %>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
 </div>
