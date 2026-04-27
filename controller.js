@@ -12,3 +12,16 @@ export function getSignup(req, res) {
 export function getLogin(req, res) {
   res.render("layout", { title: "Log In", page: "pages/login", css: "/css/form.css" });
 }
+
+export async function createUser(req, res) {
+  const { first_name, last_name, username, password, membership_status } = req.body;
+  const membership = !!membership_status;
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await db.createUser({ first_name, last_name, username, hashedPassword, membership });
+  res.redirect("/");
+}
+
+export async function loginUser(req, res) {
+  res.send(req.body);
+}
