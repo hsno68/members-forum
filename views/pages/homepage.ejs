@@ -1,16 +1,20 @@
 <div class="container">
-  <div>
+  <div class="body">
     <h1>Homepage</h1>
-    <a href="/signup" class="button">Sign Up</a>
-    <% if (!locals.user) { %>
-      <a href="/login" class="button">Log In</a>
-    <% } %>
+    <div>
+      <a href="/signup" class="button">Sign Up</a>
+      <% if (locals.user) { %>
+        <a href="/logout" class="button">Log Out</a>
+      <% } else { %>
+        <a href="/login" class="button">Log In</a>
+      <% } %>
+    </div>
   </div>
   <% if (locals.user) { %>
-    <div>
+    <div class="body">
       <h2>Welcome Back</h2>
-      <a href="/logout" class="button">Log Out</a>
-      <h2>Users</h2>
+      <a href="/new-message" class="button new-message">New Message</a>
+      <h3>Users</h3>
       <ul>
         <% users.forEach(({username}) => { %>
           <li>
