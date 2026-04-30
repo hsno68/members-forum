@@ -1,14 +1,21 @@
 import { Router } from "express";
-import { getHomepage, getSignup, getLogin, createUser, loginUser, logout } from "./controller.js";
+import {
+  getHomepage,
+  getSignup,
+  getSignin,
+  createUser,
+  signinUser,
+  signout,
+} from "./controller.js";
 
 const router = Router();
 
 router.get("/", getHomepage);
 router.get("/signup", getSignup);
-router.get("/login", getLogin);
-router.get("/logout", logout);
+router.get("/signin", getSignin);
+router.get("/signout", signout);
 
 router.post("/signup", createUser);
-router.post("/login", loginUser);
+router.post("/signin", signinUser);
 
 export default router;

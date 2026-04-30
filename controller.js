@@ -17,8 +17,8 @@ export function getSignup(req, res) {
   res.render("layout", { title: "Sign Up", page: "pages/signup", css: "/css/form.css" });
 }
 
-export function getLogin(req, res) {
-  res.render("layout", { title: "Log In", page: "pages/login", css: "/css/form.css" });
+export function getSignin(req, res) {
+  res.render("layout", { title: "Sign In", page: "pages/signin", css: "/css/form.css" });
 }
 
 export async function createUser(req, res) {
@@ -30,14 +30,14 @@ export async function createUser(req, res) {
   res.redirect("/");
 }
 
-export function loginUser(req, res, next) {
+export function signinUser(req, res, next) {
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/",
   })(req, res, next);
 }
 
-export function logout(req, res, next) {
+export function signout(req, res, next) {
   req.logout((err) => {
     if (err) return next(err);
     res.redirect("/");
