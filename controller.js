@@ -22,11 +22,16 @@ export function getSignin(req, res) {
 }
 
 export async function createUser(req, res) {
-  const { first_name, last_name, username, password, membership_status } = req.body;
-  const membership = !!membership_status;
+  const { first_name, last_name, username, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await db.createUser({ first_name, last_name, username, hashedPassword, membership });
+  await db.createUser({
+    first_name,
+    last_name,
+    username,
+    hashedPassword,
+    membership_status: false,
+  });
   res.redirect("/");
 }
 
