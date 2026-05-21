@@ -14,11 +14,14 @@
     <div class="body">
       <h2>Welcome Back, <%= locals.user.first_name %>.</h2>
       <a href="/new-message" class="button">New Message</a>
-      <form action="/role">
+      <form action="/role" method="post">
         <% if (locals.user.role === "user") { %>
-          <button type="submit">Join Membership</button>
+          <button type="submit" value="joinMember">Become a Member</button>
+        <% } else if (locals.user.role === "member") { %>
+          <button type="submit" value="leaveMember">Relinquish Membership</button>
+          <button type="submit" value="joinAdmin">Become an administrator</button>
         <% } else { %>
-          <button type="submit">Relinquish Membership</button>
+          <button type="submit" value="leaveAdmin">Relinquish administrator</button>
         <% } %>
       </form>
       <h3>Users</h3>

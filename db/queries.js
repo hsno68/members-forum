@@ -33,17 +33,15 @@ export async function createMessage({ title, message, user_id }) {
   ]);
 }
 
-export async function updateRole({ id }) {
-  await pool.query(
-    `
-  UPDATE users
-  SET role =
-    CASE
-      WHEN role = 'user' THEN 'member'
-      ELSE 'user'
-    END
-  WHERE id = $1
-`,
-    [id]
-  );
+export async function updateRole({ id, submitter }) {
+  const rolesMap = {
+    joinMember: "member",
+    leaveMember: "user",
+    joinAdmin: "admin",
+    leaveAdmin: "member",
+  };
+
+  const role = rolesMap[submitter];
+
+  await pool.query("UPDATE users SET role = $1 WHERE id = $2", [role, id]);
 }

@@ -59,18 +59,26 @@ export async function createMessage(req, res) {
 }
 
 export async function updateRole(req, res) {
-  const password = req.body.password;
+  const { password, submitter } = req.body;
   const { id } = req.user;
 
   if (!password) {
     return res.status(400).json({ error: "Password required." });
   }
 
-  if (password !== process.env.SECRET) {
-    return res.status(403).json({ error: "Invalid password." });
+  if (
+    (submitter === "joinMember" || submitter === "leaveMember") &&
+    password !== process.env.SECRET
+  ) {
+    return res.status(403).json({ error: "Invalid member password." });
+  } else if (
+    (submitter === "joinAdmin" || submitter === "leaveAdmin") &&
+    password !== process.env.ADMIN_SECRET
+  ) {
+    return res.status(403).json({ error: "Invalid admin password." });
   }
 
-  await db.updateRole({ id });
+  await db.updateRole({ id, submitter });
   res.sendStatus(200);
 }
 

@@ -12,10 +12,11 @@
 
 a[href="/new-message"],
 form {
-  max-width: 250px;
+  max-width: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 
 li {
