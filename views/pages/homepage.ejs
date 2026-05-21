@@ -14,11 +14,11 @@
     <div class="body">
       <h2>Welcome Back, <%= locals.user.first_name %>.</h2>
       <a href="/new-message" class="button">New Message</a>
-      <form action="/membership">
-        <% if (locals.user.membership_status) { %>
-          <button type="submit">Relinquish Membership</button>
-        <% } else { %>
+      <form action="/role">
+        <% if (locals.user.role === "user") { %>
           <button type="submit">Join Membership</button>
+        <% } else { %>
+          <button type="submit">Relinquish Membership</button>
         <% } %>
       </form>
       <h3>Users</h3>
@@ -29,18 +29,20 @@
           </li>
         <% }) %>
       </ul>
-      <h3>Messages</h3>
-      <ul>
-        <% messages.forEach(({title, message, username, timestamp}) => { %>
-          <li class="messages">
-            <h4><%= title %></h4>
-            <p><%= locals.user.membership_status ? username : "Anonymous" %></p>
-            <p><%= message %></p>
-            <p><%= locals.user.membership_status ? timestamp : "" %></p>
-          </li>
-        <% }) %>
-      </ul>
     </div>
   <% } %>
+  <div class="body">
+    <h3>Messages</h3>
+    <ul>
+      <% messages.forEach(({title, message, username, timestamp}) => { %>
+        <li class="messages">
+          <h4><%= title %></h4>
+          <p><%= locals.user && locals.user.role !== "user" ? username : "Anonymous" %></p>
+          <p><%= message %></p>
+          <p><%= locals.user && locals.user.role !== "user" ? timestamp : "" %></p>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
 </div>
 <script src="/js/confirm.js"></script>

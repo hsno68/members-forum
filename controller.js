@@ -58,7 +58,7 @@ export async function createMessage(req, res) {
   res.redirect("/");
 }
 
-export async function updateMembership(req, res) {
+export async function updateRole(req, res) {
   const password = req.body.password;
   const { id } = req.user;
 
@@ -70,7 +70,7 @@ export async function updateMembership(req, res) {
     return res.status(403).json({ error: "Invalid password." });
   }
 
-  await db.updateMembershipStatus({ id });
+  await db.updateRole({ id });
   res.sendStatus(200);
 }
 
