@@ -11,6 +11,7 @@ import {
   requireAuth,
   redirectIfAuth,
   updateRole,
+  deleteMessage,
 } from "./controller.js";
 
 const router = Router();
@@ -25,5 +26,7 @@ router.post("/signup", createUser);
 router.post("/signin", signinUser);
 router.post("/new-message", createMessage);
 router.post("/role", requireAuth, updateRole);
+
+router.delete("/messages/:id", deleteMessage);
 
 export default router;

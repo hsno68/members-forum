@@ -16,12 +16,12 @@
       <a href="/new-message" class="button">New Message</a>
       <form action="/role" method="post">
         <% if (locals.user.role === "user") { %>
-          <button type="submit" value="joinMember">Become a Member</button>
+          <button type="submit" name="roleChange" value="joinMember">Become a Member</button>
         <% } else if (locals.user.role === "member") { %>
-          <button type="submit" value="leaveMember">Relinquish Membership</button>
-          <button type="submit" value="joinAdmin">Become an administrator</button>
+          <button type="submit" name="roleChange" value="leaveMember">Relinquish Membership</button>
+          <button type="submit" name="roleChange" value="joinAdmin">Become an administrator</button>
         <% } else { %>
-          <button type="submit" value="leaveAdmin">Relinquish administrator</button>
+          <button type="submit" name="roleChange" value="leaveAdmin">Relinquish administrator</button>
         <% } %>
       </form>
       <h3>Users</h3>
@@ -37,12 +37,17 @@
   <div class="body">
     <h3>Messages</h3>
     <ul>
-      <% messages.forEach(({title, message, username, timestamp}) => { %>
+      <% messages.forEach(({id, title, message, username, timestamp}) => { %>
         <li class="messages">
-          <h4><%= title %></h4>
-          <p><%= locals.user && locals.user.role !== "user" ? username : "Anonymous" %></p>
-          <p><%= message %></p>
-          <p><%= locals.user && locals.user.role !== "user" ? timestamp : "" %></p>
+          <div>
+            <h4><%= title %></h4>
+            <p><%= locals.user && locals.user.role !== "user" ? username : "Anonymous" %></p>
+            <p><%= message %></p>
+            <p><%= locals.user && locals.user.role !== "user" ? timestamp : "" %></p>
+          </div>
+          <% if (locals.user.role === "admin") { %>
+            <button type="button" data-id="<%= id %>" class="delete"><span class="material-symbols-rounded">delete</span></button>
+          <% } %>
         </li>
       <% }) %>
     </ul>

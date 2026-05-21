@@ -7,7 +7,7 @@ export async function getUsers() {
 
 export async function getMessages() {
   const { rows } = await pool.query(
-    "SELECT title, message, timestamp, username FROM messages JOIN users ON messages.user_id = users.id"
+    "SELECT messages.id, title, message, timestamp, username FROM messages JOIN users ON messages.user_id = users.id"
   );
   return rows;
 }
@@ -44,4 +44,8 @@ export async function updateRole({ id, submitter }) {
   const role = rolesMap[submitter];
 
   await pool.query("UPDATE users SET role = $1 WHERE id = $2", [role, id]);
+}
+
+export async function deleteMessage(id) {
+  await pool.query("DELETE FROM messages WHERE id = $1", [id]);
 }

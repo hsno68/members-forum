@@ -82,6 +82,13 @@ export async function updateRole(req, res) {
   res.sendStatus(200);
 }
 
+export async function deleteMessage(req, res) {
+  const { id } = req.params;
+
+  await db.deleteMessage(id);
+  res.sendStatus(200);
+}
+
 export function requireAuth(req, res, next) {
   if (!req.isAuthenticated()) {
     return res.redirect("/");

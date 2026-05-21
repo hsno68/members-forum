@@ -39,4 +39,18 @@ li.users {
 
 li.messages {
   padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+li.messages > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.delete {
+  padding: 1rem;
+  align-self: center;
+  color: #da6e6e;
 }

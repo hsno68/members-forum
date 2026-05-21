@@ -23,3 +23,32 @@ document.addEventListener("submit", async (e) => {
 
   window.location.reload();
 });
+
+document.addEventListener("click", async (e) => {
+  const button = e.target.closest(".delete");
+  if (!button) {
+    return;
+  }
+
+  if (!confirm("Are you sure you want to delete this?")) {
+    return;
+  }
+
+  const id = button.dataset.id;
+
+  try {
+    const res = await fetch(`/messages/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      alert("Unable to delete.");
+      throw new Error("Delete failed");
+    }
+
+    window.location.reload();
+  } catch (err) {
+    console.error(err);
+    alert("Network error. Try again.");
+  }
+});
