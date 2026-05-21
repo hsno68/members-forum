@@ -12,8 +12,15 @@
   </div>
   <% if (locals.user) { %>
     <div class="body">
-      <h2>Welcome Back</h2>
-      <a href="/new-message" class="button new-message">New Message</a>
+      <h2>Welcome Back, <%= locals.user.first_name %>.</h2>
+      <a href="/new-message" class="button">New Message</a>
+      <form action="/membership">
+        <% if (locals.user.membership_status) { %>
+          <button type="submit">Relinquish Membership</button>
+        <% } else { %>
+          <button type="submit">Join Membership</button>
+        <% } %>
+      </form>
       <h3>Users</h3>
       <ul class="users-container">
         <% users.forEach(({username}) => { %>
@@ -36,3 +43,4 @@
     </div>
   <% } %>
 </div>
+<script src="/js/confirm.js"></script>

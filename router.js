@@ -10,6 +10,7 @@ import {
   signout,
   requireAuth,
   redirectIfAuth,
+  updateMembership,
 } from "./controller.js";
 
 const router = Router();
@@ -23,5 +24,6 @@ router.get("/signout", signout);
 router.post("/signup", createUser);
 router.post("/signin", signinUser);
 router.post("/new-message", createMessage);
+router.post("/membership", requireAuth, updateMembership);
 
 export default router;

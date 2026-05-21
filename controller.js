@@ -1,6 +1,9 @@
 import * as db from "./db/queries.js";
 import passport from "passport";
 import bcrypt from "bcryptjs";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export async function getHomepage(req, res) {
   const users = await db.getUsers();
@@ -55,15 +58,31 @@ export async function createMessage(req, res) {
   res.redirect("/");
 }
 
+export async function updateMembership(req, res) {
+  const password = req.body.password;
+  const { id } = req.user;
+
+  if (!password) {
+    return res.status(400).json({ error: "Password required." });
+  }
+
+  if (password !== process.env.SECRET) {
+    return res.status(403).json({ error: "Invalid password." });
+  }
+
+  await db.updateMembershipStatus({ id });
+  res.sendStatus(200);
+}
+
 export function requireAuth(req, res, next) {
-  if (!req.user) {
+  if (!req.isAuthenticated()) {
     return res.redirect("/");
   }
   next();
 }
 
 export function redirectIfAuth(req, res, next) {
-  if (req.user) {
+  if (req.isAuthenticated()) {
     return res.redirect("/");
   }
   next();

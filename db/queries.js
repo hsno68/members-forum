@@ -32,3 +32,9 @@ export async function createMessage({ title, message, user_id }) {
     user_id,
   ]);
 }
+
+export async function updateMembershipStatus({ id }) {
+  await pool.query("UPDATE users SET membership_status = NOT membership_status WHERE id = $1", [
+    id,
+  ]);
+}

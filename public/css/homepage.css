@@ -10,8 +10,9 @@
   gap: 0.5rem;
 }
 
-a.button.new-message {
-  max-width: 200px;
+a[href="/new-message"],
+form {
+  max-width: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
