@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+li {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+}
+
+li.messages {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
+li.messages > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+li.messages > div:last-child {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.control {
+  padding: 0.25rem 0.5rem;
+  align-self: center;
+}
+
+.delete {
+  color: #da6e6e;
+}

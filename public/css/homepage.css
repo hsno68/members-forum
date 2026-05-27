@@ -11,6 +11,7 @@
 }
 
 a[href="/new-message"],
+a[href="/my/messages"],
 form {
   max-width: 300px;
   display: flex;

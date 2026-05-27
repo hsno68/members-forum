@@ -6,6 +6,7 @@ import {
   getNewMessage,
   createUser,
   createMessage,
+  getUserMessages,
   signinUser,
   signout,
   requireAuth,
@@ -20,6 +21,7 @@ router.get("/", getHomepage);
 router.get("/signup", getSignup);
 router.get("/signin", redirectIfAuth, getSignin);
 router.get("/new-message", requireAuth, getNewMessage);
+router.get("/my/messages", requireAuth, getUserMessages);
 router.get("/signout", signout);
 
 router.post("/signup", createUser);

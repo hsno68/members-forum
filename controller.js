@@ -58,6 +58,19 @@ export async function createMessage(req, res) {
   res.redirect("/");
 }
 
+export async function getUserMessages(req, res) {
+  const { id } = req.user;
+
+  const messages = await db.getUserMessages(id);
+  res.render("layout", {
+    title: "My Messages",
+    page: "pages/user-messages",
+    css: "/css/user-messages.css",
+    user: req.user,
+    messages,
+  });
+}
+
 export async function updateRole(req, res) {
   const { password, submitter } = req.body;
   const { id } = req.user;

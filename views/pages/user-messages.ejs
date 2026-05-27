@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Hello, <%= locals.user.first_name %>.</h2>
+  <div>
+    <a href="/new-message" class="button">New Message</a>
+    <a href="/" class="button">Back</a>
+  </div>
+  <ul>
+      <% messages.forEach(({id, title, message, username, timestamp}) => { %>
+        <li class="messages">
+          <div>
+            <h4><%= title %></h4>
+            <p><%= username %></p>
+            <p><%= message %></p>
+            <p><%= timestamp %></p>
+          </div>
+          <div>
+            <button type="button" data-id="<%= id %>" class="control edit">
+              <span class="material-symbols-rounded">edit</span>
+            </button>
+            <button type="button" data-id="<%= id %>" class="control delete">
+              <span class="material-symbols-rounded">delete</span>
+            </button>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+</div>
+<script src="/js/confirm.js"></script>
