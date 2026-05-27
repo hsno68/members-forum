@@ -24,14 +24,16 @@
           <button type="submit" name="roleChange" value="leaveAdmin">Relinquish administrator</button>
         <% } %>
       </form>
-      <h3>Users</h3>
-      <ul class="users-container">
-        <% users.forEach(({username}) => { %>
-          <li class="users">
-            <%= username %>
-          </li>
-        <% }) %>
-      </ul>
+      <% if (locals.user.role === "admin") { %>
+        <h3>Users</h3>
+        <ul class="users-container">
+          <% users.forEach(({username}) => { %>
+            <li class="users">
+              <%= username %>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
     </div>
   <% } %>
   <div class="body">
@@ -45,7 +47,7 @@
             <p><%= message %></p>
             <p><%= locals.user && locals.user.role !== "user" ? timestamp : "" %></p>
           </div>
-          <% if (locals.user.role === "admin") { %>
+          <% if (locals.user && locals.user.role === "admin") { %>
             <button type="button" data-id="<%= id %>" class="delete"><span class="material-symbols-rounded">delete</span></button>
           <% } %>
         </li>

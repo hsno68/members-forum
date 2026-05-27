@@ -4,7 +4,7 @@ document.addEventListener("submit", async (e) => {
 
   e.preventDefault();
 
-  const password = prompt("What is the secret key?");
+  const password = prompt('What is the secret key? (member: "member", admin: "super_member")');
   if (!password) {
     return;
   }
