@@ -43,14 +43,24 @@ app.use(passport.session());
 app.use("/", router);
 
 //404 route
-app.use((req, res) => {
-  res.status(404).send("Page not found.");
+app.use((req, res, next) => {
+  const err = new Error("Page not found");
+  err.status = 404;
+  next(err);
 });
 
 //Error route
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).send("Server error.");
+  const status = err.status || 500;
+  const message = err.message || "Server error";
+
+  res.status(status).render("layout", {
+    title: "Error Page",
+    page: "pages/error",
+    css: null,
+    error: { status, message },
+  });
 });
 
 //Server start

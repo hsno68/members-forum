@@ -5,18 +5,22 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export async function getHomepage(req, res) {
-  const users = await db.getUsers();
-  const posts = await db.getPosts();
+export async function getHomepage(req, res, next) {
+  try {
+    const users = await db.getUsers();
+    const posts = await db.getPosts();
 
-  res.render("layout", {
-    title: "Home",
-    page: "pages/homepage",
-    css: "/css/homepage.css",
-    users,
-    posts,
-    user: req.user,
-  });
+    res.render("layout", {
+      title: "Home",
+      page: "pages/homepage",
+      css: "/css/homepage.css",
+      users,
+      posts,
+      user: req.user,
+    });
+  } catch (err) {
+    next(err);
+  }
 }
 
 export function getSignup(req, res) {
@@ -36,73 +40,96 @@ export function getNewPost(req, res) {
   });
 }
 
-export async function createUser(req, res) {
-  const { first_name, last_name, username, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
+export async function createUser(req, res, next) {
+  try {
+    const { first_name, last_name, username, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  await db.createUser({
-    first_name,
-    last_name,
-    username,
-    hashedPassword,
-    membership_status: false,
-  });
-  res.redirect("/");
-}
-
-export async function createPost(req, res) {
-  const { title, body } = req.body;
-  const { id } = req.user;
-  const safeTitle = title?.trim() ? title.trim() : "Untitled";
-
-  await db.createPost({
-    title: safeTitle,
-    body,
-    user_id: id,
-  });
-  res.redirect("/my/posts");
-}
-
-export async function getUserPosts(req, res) {
-  const { id } = req.user;
-
-  const posts = await db.getUserPosts(id);
-  res.render("layout", {
-    title: "My Posts",
-    page: "pages/user-posts",
-    css: "/css/user-posts.css",
-    user: req.user,
-    posts,
-  });
-}
-
-export async function getSinglePost(req, res) {
-  const { id: userId } = req.user;
-  const { id: postId } = req.params;
-
-  const post = await db.getSinglePost({ postId, userId });
-
-  if (!post) {
+    await db.createUser({
+      first_name,
+      last_name,
+      username,
+      hashedPassword,
+      membership_status: false,
+    });
     res.redirect("/");
+  } catch (err) {
+    next(err);
   }
-
-  res.render("layout", {
-    title: "Edit Post",
-    page: "pages/edit-post",
-    css: "/css/form.css",
-    user: req.user,
-    post,
-  });
 }
 
-export async function updatePost(req, res) {
-  const { title, body } = req.body;
-  const { id } = req.params;
+export async function createPost(req, res, next) {
+  try {
+    const { title, body } = req.body;
+    const { id } = req.user;
+    const safeTitle = title?.trim() ? title.trim() : "Untitled";
 
-  await db.updatePost({ id, title, body });
-  res.redirect("/my/posts");
+    await db.createPost({
+      title: safeTitle,
+      body,
+      user_id: id,
+    });
+    res.redirect("/my/posts");
+  } catch (err) {
+    next(err);
+  }
 }
 
+export async function getUserPosts(req, res, next) {
+  try {
+    const { id } = req.user;
+    const posts = await db.getUserPosts(id);
+
+    res.render("layout", {
+      title: "My Posts",
+      page: "pages/user-posts",
+      css: "/css/user-posts.css",
+      user: req.user,
+      posts,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function getSinglePost(req, res, next) {
+  try {
+    const { id: userId } = req.user;
+    const { id: postId } = req.params;
+
+    const post = await db.getSinglePost({ postId, userId });
+
+    if (!post) {
+      const err = new Error("Post not found");
+      err.status = 404;
+      throw err;
+    }
+
+    res.render("layout", {
+      title: "Edit Post",
+      page: "pages/edit-post",
+      css: "/css/form.css",
+      user: req.user,
+      post,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function updatePost(req, res, next) {
+  try {
+    const { title, body } = req.body;
+    const { id } = req.params;
+
+    await db.updatePost({ id, title, body });
+    res.redirect("/my/posts");
+  } catch (err) {
+    next(err);
+  }
+}
+
+//API
 export async function updateRole(req, res) {
   const { password, submitter } = req.body;
   const { id } = req.user;
@@ -123,15 +150,23 @@ export async function updateRole(req, res) {
     return res.status(403).json({ error: "Invalid admin password." });
   }
 
-  await db.updateRole({ id, submitter });
-  res.sendStatus(200);
+  try {
+    await db.updateRole({ id, submitter });
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
 }
 
+//API
 export async function deletePost(req, res) {
-  const { id } = req.params;
-
-  await db.deletePost(id);
-  res.sendStatus(200);
+  try {
+    const { id } = req.params;
+    await db.deletePost(id);
+    res.sendStatus(200);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
 }
 
 export function requireAuth(req, res, next) {
