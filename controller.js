@@ -10,12 +10,17 @@ export async function getHomepage(req, res, next) {
     const users = await db.getUsers();
     const posts = await db.getPosts();
 
+    const formattedPosts = posts.map((post) => ({
+      ...post,
+      timestamp: formatTimestamp(post.timestamp),
+    }));
+
     res.render("layout", {
       title: "Home",
       page: "pages/homepage",
       css: "/css/homepage.css",
       users,
-      posts,
+      posts: formattedPosts,
       user: req.user,
     });
   } catch (err) {
@@ -80,12 +85,17 @@ export async function getUserPosts(req, res, next) {
     const { id } = req.user;
     const posts = await db.getUserPosts(id);
 
+    const formattedPosts = posts.map((post) => ({
+      ...post,
+      timestamp: formatTimestamp(post.timestamp),
+    }));
+
     res.render("layout", {
       title: "My Posts",
       page: "pages/user-posts",
       css: "/css/user-posts.css",
       user: req.user,
-      posts,
+      posts: formattedPosts,
     });
   } catch (err) {
     next(err);
@@ -195,4 +205,17 @@ export function signout(req, res, next) {
     if (err) return next(err);
     res.redirect("/");
   });
+}
+
+//Helpers
+function formatTimestamp(date) {
+  return new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date(date));
 }
