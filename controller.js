@@ -2,6 +2,7 @@ import * as db from "./db/queries.js";
 import passport from "passport";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
+import { formatTimestamp } from "./public/js/utils.js";
 
 dotenv.config();
 
@@ -205,17 +206,4 @@ export function signout(req, res, next) {
     if (err) return next(err);
     res.redirect("/");
   });
-}
-
-//Helpers
-function formatTimestamp(date) {
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
-  }).format(new Date(date));
 }
