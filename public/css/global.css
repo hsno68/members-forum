@@ -78,7 +78,7 @@ textarea {
 a.button,
 button {
   display: inline-block;
-  padding: 0.5em 1em;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);

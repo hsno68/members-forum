@@ -13,8 +13,7 @@
   <% if (locals.user) { %>
     <div class="body">
       <h2>Welcome Back, <%= locals.user.first_name %>.</h2>
-      <a href="/new-message" class="button">New Message</a>
-      <a href="/my/messages" class="button">My Messages</a>
+      <a href="/my/posts" class="button">My Posts</a>
       <form action="/role" method="post">
         <% if (locals.user.role === "user") { %>
           <button type="submit" name="roleChange" value="joinMember">Become a Member</button>
@@ -38,14 +37,14 @@
     </div>
   <% } %>
   <div class="body">
-    <h3>Messages</h3>
+    <h3>Forum</h3>
     <ul>
-      <% messages.forEach(({id, title, message, username, timestamp}) => { %>
-        <li class="messages">
+      <% posts.forEach(({id, title, body, username, timestamp}) => { %>
+        <li class="post">
           <div>
             <h4><%= title %></h4>
             <p><%= locals.user && locals.user.role !== "user" ? username : "Anonymous" %></p>
-            <p><%= message %></p>
+            <p><%= body %></p>
             <p><%= locals.user && locals.user.role !== "user" ? timestamp : "" %></p>
           </div>
           <% if (locals.user && locals.user.role === "admin") { %>

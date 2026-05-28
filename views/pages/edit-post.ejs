@@ -1,0 +1,19 @@
+<% const { id, title, body } = post%>
+
+<div class="container">
+  <h1>Edit</h1>
+  <form action="/my/posts/<%= id %>" method="POST">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" maxlength="100" value="<%= title %>"/>
+    </div>
+    <div class="form-group">
+      <label for="body">Body</label>
+      <textarea id="body" name="body" rows="8"><%= body %></textarea>
+    </div>
+    <div>
+      <a href="/my/posts" class="button">Back</a>
+      <button type="submit">Update</button>
+    </div>
+  </form>
+</div>

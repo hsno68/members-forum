@@ -3,16 +3,18 @@ import {
   getHomepage,
   getSignup,
   getSignin,
-  getNewMessage,
+  getNewPost,
   createUser,
-  createMessage,
-  getUserMessages,
+  createPost,
+  getUserPosts,
+  getSinglePost,
+  updatePost,
   signinUser,
   signout,
   requireAuth,
   redirectIfAuth,
   updateRole,
-  deleteMessage,
+  deletePost,
 } from "./controller.js";
 
 const router = Router();
@@ -20,15 +22,17 @@ const router = Router();
 router.get("/", getHomepage);
 router.get("/signup", getSignup);
 router.get("/signin", redirectIfAuth, getSignin);
-router.get("/new-message", requireAuth, getNewMessage);
-router.get("/my/messages", requireAuth, getUserMessages);
+router.get("/new-post", requireAuth, getNewPost);
+router.get("/my/posts", requireAuth, getUserPosts);
+router.get("/my/posts/:id", requireAuth, getSinglePost);
 router.get("/signout", signout);
 
 router.post("/signup", createUser);
 router.post("/signin", signinUser);
-router.post("/new-message", createMessage);
+router.post("/new-post", requireAuth, createPost);
+router.post("/my/posts/:id", requireAuth, updatePost);
 router.post("/role", requireAuth, updateRole);
 
-router.delete("/messages/:id", deleteMessage);
+router.delete("/posts/:id", deletePost);
 
 export default router;

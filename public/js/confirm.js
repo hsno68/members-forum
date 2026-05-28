@@ -4,7 +4,7 @@ document.addEventListener("submit", async (e) => {
 
   e.preventDefault();
 
-  const password = prompt('What is the secret key? (member: "member", admin: "super_member")');
+  const password = prompt('member: "member", admin: "super_member"');
   if (!password) {
     return;
   }
@@ -37,7 +37,7 @@ document.addEventListener("click", async (e) => {
   const id = button.dataset.id;
 
   try {
-    const res = await fetch(`/messages/${id}`, {
+    const res = await fetch(`/posts/${id}`, {
       method: "DELETE",
     });
 

@@ -7,14 +7,14 @@ dotenv.config();
 
 export async function getHomepage(req, res) {
   const users = await db.getUsers();
-  const messages = await db.getMessages();
+  const posts = await db.getPosts();
 
   res.render("layout", {
     title: "Home",
     page: "pages/homepage",
     css: "/css/homepage.css",
     users,
-    messages,
+    posts,
     user: req.user,
   });
 }
@@ -27,8 +27,13 @@ export function getSignin(req, res) {
   res.render("layout", { title: "Sign In", page: "pages/signin", css: "/css/form.css" });
 }
 
-export function getNewMessage(req, res) {
-  res.render("layout", { title: "New Mesage", page: "pages/new-message", css: "/css/form.css" });
+export function getNewPost(req, res) {
+  res.render("layout", {
+    title: "New Post",
+    page: "pages/new-post",
+    css: "/css/form.css",
+    user: req.user,
+  });
 }
 
 export async function createUser(req, res) {
@@ -45,30 +50,57 @@ export async function createUser(req, res) {
   res.redirect("/");
 }
 
-export async function createMessage(req, res) {
-  const { title, message } = req.body;
+export async function createPost(req, res) {
+  const { title, body } = req.body;
   const { id } = req.user;
   const safeTitle = title?.trim() ? title.trim() : "Untitled";
 
-  await db.createMessage({
+  await db.createPost({
     title: safeTitle,
-    message,
+    body,
     user_id: id,
   });
-  res.redirect("/");
+  res.redirect("/my/posts");
 }
 
-export async function getUserMessages(req, res) {
+export async function getUserPosts(req, res) {
   const { id } = req.user;
 
-  const messages = await db.getUserMessages(id);
+  const posts = await db.getUserPosts(id);
   res.render("layout", {
-    title: "My Messages",
-    page: "pages/user-messages",
-    css: "/css/user-messages.css",
+    title: "My Posts",
+    page: "pages/user-posts",
+    css: "/css/user-posts.css",
     user: req.user,
-    messages,
+    posts,
   });
+}
+
+export async function getSinglePost(req, res) {
+  const { id: userId } = req.user;
+  const { id: postId } = req.params;
+
+  const post = await db.getSinglePost({ postId, userId });
+
+  if (!post) {
+    res.redirect("/");
+  }
+
+  res.render("layout", {
+    title: "Edit Post",
+    page: "pages/edit-post",
+    css: "/css/form.css",
+    user: req.user,
+    post,
+  });
+}
+
+export async function updatePost(req, res) {
+  const { title, body } = req.body;
+  const { id } = req.params;
+
+  await db.updatePost({ id, title, body });
+  res.redirect("/my/posts");
 }
 
 export async function updateRole(req, res) {
@@ -95,10 +127,10 @@ export async function updateRole(req, res) {
   res.sendStatus(200);
 }
 
-export async function deleteMessage(req, res) {
+export async function deletePost(req, res) {
   const { id } = req.params;
 
-  await db.deleteMessage(id);
+  await db.deletePost(id);
   res.sendStatus(200);
 }
 

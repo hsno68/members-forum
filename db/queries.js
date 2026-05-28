@@ -5,19 +5,31 @@ export async function getUsers() {
   return rows;
 }
 
-export async function getMessages() {
+export async function getPosts() {
   const { rows } = await pool.query(
-    "SELECT messages.id, title, message, timestamp, username FROM messages JOIN users ON messages.user_id = users.id"
+    "SELECT posts.id, title, body, timestamp, username FROM posts JOIN users ON posts.user_id = users.id ORDER BY timestamp DESC"
   );
   return rows;
 }
 
-export async function getUserMessages(id) {
+export async function getUserPosts(id) {
   const { rows } = await pool.query(
-    "SELECT messages.id, title, message, timestamp FROM messages JOIN users ON messages.user_id = users.id WHERE users.id = $1",
+    "SELECT posts.id, title, body, timestamp FROM posts JOIN users ON posts.user_id = users.id WHERE users.id = $1 ORDER BY timestamp DESC",
     [id]
   );
   return rows;
+}
+
+export async function getSinglePost({ postId, userId }) {
+  const { rows } = await pool.query(
+    "SELECT id, title, body FROM posts WHERE id = $1 AND user_id = $2",
+    [postId, userId]
+  );
+  return rows[0];
+}
+
+export async function updatePost({ id, title, body }) {
+  await pool.query("UPDATE posts SET title = $1, body = $2 WHERE id = $3", [title, body, id]);
 }
 
 export async function createUser({
@@ -33,10 +45,10 @@ export async function createUser({
   );
 }
 
-export async function createMessage({ title, message, user_id }) {
-  await pool.query("INSERT INTO messages (title, message, user_id) VALUES ($1, $2, $3)", [
+export async function createPost({ title, body, user_id }) {
+  await pool.query("INSERT INTO posts (title, body, user_id) VALUES ($1, $2, $3)", [
     title,
-    message,
+    body,
     user_id,
   ]);
 }
@@ -54,6 +66,6 @@ export async function updateRole({ id, submitter }) {
   await pool.query("UPDATE users SET role = $1 WHERE id = $2", [role, id]);
 }
 
-export async function deleteMessage(id) {
-  await pool.query("DELETE FROM messages WHERE id = $1", [id]);
+export async function deletePost(id) {
+  await pool.query("DELETE FROM posts WHERE id = $1", [id]);
 }

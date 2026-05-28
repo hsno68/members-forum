@@ -9,19 +9,19 @@ li {
   border-radius: 8px;
 }
 
-li.messages {
+li.post {
   padding: 1rem;
   display: grid;
   grid-template-columns: 1fr auto;
 }
 
-li.messages > div:first-child {
+li.post > div:first-child {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-li.messages > div:last-child {
+li.post > div:last-child {
   display: flex;
   gap: 0.25rem;
 }
@@ -29,6 +29,17 @@ li.messages > div:last-child {
 .control {
   padding: 0.25rem 0.5rem;
   align-self: center;
+}
+
+a.edit,
+button.delete {
+  padding: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-surface);
+  border: none;
+  border-radius: 0.75rem;
 }
 
 .delete {
