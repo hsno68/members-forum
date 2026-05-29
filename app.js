@@ -58,7 +58,7 @@ app.use((err, req, res, next) => {
   res.status(status).render("layout", {
     title: "Error Page",
     page: "pages/error",
-    css: null,
+    css: "/css/error.css",
     error: { status, message },
   });
 });
