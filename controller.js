@@ -208,9 +208,23 @@ export function redirectIfAuth(req, res, next) {
 }
 
 export function signinUser(req, res, next) {
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/",
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!user) {
+      const error = new Error(info?.message || "Invalid credentials.");
+      error.status = 401;
+      return next(error);
+    }
+
+    req.logIn(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
   })(req, res, next);
 }
 
