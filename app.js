@@ -15,7 +15,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const PgSession = pgSession(session);
 
@@ -30,7 +30,7 @@ app.use(
       pool,
       createTableIfMissing: true,
     }),
-    secret: "cats",
+    secret: process.env.SESSION_SECRET || "cats",
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 14 * 24 * 60 * 60 * 1000 },
