@@ -63,7 +63,6 @@ export async function createUser(req, res, next) {
       last_name,
       username,
       hashedPassword,
-      membership_status: false,
     });
     res.redirect("/");
   } catch (err) {

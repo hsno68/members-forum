@@ -46,16 +46,10 @@ export async function updatePost({ id, title, body }) {
   await pool.query("UPDATE posts SET title = $1, body = $2 WHERE id = $3", [title, body, id]);
 }
 
-export async function createUser({
-  first_name,
-  last_name,
-  username,
-  hashedPassword,
-  membership_status,
-}) {
+export async function createUser({ first_name, last_name, username, hashedPassword }) {
   await pool.query(
-    "INSERT INTO users (first_name, last_name, username, password, membership_status) VALUES ($1, $2, $3, $4, $5)",
-    [first_name, last_name, username, hashedPassword, membership_status]
+    "INSERT INTO users (first_name, last_name, username, password) VALUES ($1, $2, $3, $4)",
+    [first_name, last_name, username, hashedPassword]
   );
 }
 
