@@ -19,7 +19,7 @@ import {
 
 const router = Router();
 
-router.get("/", getHomepage);
+router.get("/{homepage}", getHomepage);
 router.get("/signup", getSignup);
 router.get("/signin", redirectIfAuth, getSignin);
 router.get("/new-post", requireAuth, getNewPost);

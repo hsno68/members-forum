@@ -5,16 +5,30 @@ export async function getUsers() {
   return rows;
 }
 
-export async function getPosts() {
+export async function getPosts(sort) {
+  const sortMap = {
+    "timestamp-oldest": "timestamp ASC",
+    "timestamp-newest": "timestamp DESC",
+  };
+
+  const sortBy = sortMap[sort] || "timestamp DESC";
+
   const { rows } = await pool.query(
-    "SELECT posts.id, title, body, timestamp, username FROM posts JOIN users ON posts.user_id = users.id ORDER BY timestamp DESC"
+    `SELECT posts.id, title, body, timestamp, username FROM posts JOIN users ON posts.user_id = users.id ORDER BY ${sortBy}`
   );
   return rows;
 }
 
-export async function getUserPosts(id) {
+export async function getUserPosts({ id, sort }) {
+  const sortMap = {
+    "timestamp-oldest": "timestamp ASC",
+    "timestamp-newest": "timestamp DESC",
+  };
+
+  const sortBy = sortMap[sort] || "timestamp DESC";
+
   const { rows } = await pool.query(
-    "SELECT posts.id, title, body, timestamp FROM posts JOIN users ON posts.user_id = users.id WHERE users.id = $1 ORDER BY timestamp DESC",
+    `SELECT posts.id, title, body, timestamp FROM posts JOIN users ON posts.user_id = users.id WHERE users.id = $1 ORDER BY ${sortBy}`,
     [id]
   );
   return rows;

@@ -45,3 +45,15 @@ button.delete {
 .delete {
   color: #da6e6e;
 }
+
+.heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button.selected {
+  background-color: #d9d9de;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+  text-shadow: none;
+}

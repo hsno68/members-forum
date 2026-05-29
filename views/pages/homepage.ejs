@@ -37,7 +37,13 @@
     </div>
   <% } %>
   <div class="body">
-    <h3>Forum</h3>
+    <div class="heading-container">
+      <h3>Forum</h3>
+    <div>
+      <a href="/homepage/?sort=timestamp-oldest" class="button <%= sortOldest ? "selected" : "" %>">Oldest</a>
+      <a href="/homepage/?sort=timestamp-newest" class="button <%= sortNewest ? "selected" : "" %>">Newest</a>
+    </div>
+    </div>
     <ul>
       <% posts.forEach(({id, title, body, username, timestamp}) => { %>
         <li class="post">

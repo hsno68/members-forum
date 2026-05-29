@@ -1,8 +1,14 @@
 <div class="container">
   <h2>Hello, <%= locals.user.first_name %>.</h2>
-  <div>
-    <a href="/new-post" class="button">New Post</a>
-    <a href="/" class="button">Back</a>
+  <div class="heading-container">
+    <div>
+      <a href="/new-post" class="button">New Post</a>
+      <a href="/" class="button">Back</a>
+    </div>
+    <div>
+      <a href="/my/posts/?sort=timestamp-oldest" class="button <%= sortOldest ? "selected" : "" %>">Oldest</a>
+      <a href="/my/posts/?sort=timestamp-newest" class="button <%= sortNewest ? "selected" : "" %>">Newest</a>
+    </div>
   </div>
   <ul>
       <% posts.forEach(({id, title, body, username, timestamp}) => { %>

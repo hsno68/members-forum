@@ -8,8 +8,13 @@ dotenv.config();
 
 export async function getHomepage(req, res, next) {
   try {
+    const { sort } = req.query;
+
+    const sortOldest = sort === "timestamp-oldest";
+    const sortNewest = sort === "timestamp-newest" || !sort;
+
     const users = await db.getUsers();
-    const posts = await db.getPosts();
+    const posts = await db.getPosts(sort);
 
     const formattedPosts = posts.map((post) => ({
       ...post,
@@ -20,9 +25,11 @@ export async function getHomepage(req, res, next) {
       title: "Home",
       page: "pages/homepage",
       css: "/css/homepage.css",
+      user: req.user,
       users,
       posts: formattedPosts,
-      user: req.user,
+      sortOldest,
+      sortNewest,
     });
   } catch (err) {
     next(err);
@@ -83,8 +90,13 @@ export async function createPost(req, res, next) {
 
 export async function getUserPosts(req, res, next) {
   try {
+    const { sort } = req.query;
+
+    const sortOldest = sort === "timestamp-oldest";
+    const sortNewest = sort === "timestamp-newest" || !sort;
+
     const { id } = req.user;
-    const posts = await db.getUserPosts(id);
+    const posts = await db.getUserPosts({ id, sort });
 
     const formattedPosts = posts.map((post) => ({
       ...post,
@@ -97,6 +109,8 @@ export async function getUserPosts(req, res, next) {
       css: "/css/user-posts.css",
       user: req.user,
       posts: formattedPosts,
+      sortOldest,
+      sortNewest,
     });
   } catch (err) {
     next(err);
